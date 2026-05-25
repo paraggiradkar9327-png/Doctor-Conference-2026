@@ -110,15 +110,13 @@
     .hero-bg {
       position: absolute;
       inset: 0;
-      background: radial-gradient(ellipse at 30% 50%, rgba(201, 168, 76, 0.12) 0%, transparent 60%),
-        radial-gradient(ellipse at 80% 20%, rgba(26, 122, 74, 0.08) 0%, transparent 50%);
+      background: radial-gradient(ellipse at 30% 50%, rgba(201, 168, 76, 0.12) 0%, transparent 60%), radial-gradient(ellipse at 80% 20%, rgba(26, 122, 74, 0.08) 0%, transparent 50%);
     }
 
     .hero-grid {
       position: absolute;
       inset: 0;
-      background-image: linear-gradient(rgba(201, 168, 76, 0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(201, 168, 76, 0.05) 1px, transparent 1px);
+      background-image: linear-gradient(rgba(201, 168, 76, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(201, 168, 76, 0.05) 1px, transparent 1px);
       background-size: 60px 60px;
     }
 
@@ -682,7 +680,7 @@
       margin-top: 8px;
     }
 
-    .img-preview {
+    .img-preview-upload {
       width: 80px;
       height: 80px;
       border-radius: 50%;
@@ -833,6 +831,7 @@
       font-size: 0.9rem;
       color: #333;
       line-height: 1.6;
+      white-space: pre-line;
     }
 
     /* ADMIN PAGE */
@@ -1004,10 +1003,7 @@
       color: var(--white);
     }
 
-    .action-view:hover {
-      opacity: 0.85;
-    }
-
+    .action-view:hover,
     .action-verify:hover {
       opacity: 0.85;
     }
@@ -1138,6 +1134,197 @@
       z-index: 1;
     }
 
+    /* VISIT CARD PAGE (shown when QR is scanned) */
+    #visitCardPage {
+      display: none;
+      min-height: 100vh;
+      background: var(--navy);
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    #visitCardPage.active {
+      display: flex;
+    }
+
+    .visit-card-wrap {
+      background: linear-gradient(145deg, #0d1e35, #0a1628);
+      border-radius: 24px;
+      padding: 48px 40px;
+      text-align: center;
+      color: var(--white);
+      position: relative;
+      overflow: hidden;
+      max-width: 400px;
+      width: 100%;
+      box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(201, 168, 76, 0.2);
+    }
+
+    .visit-card-wrap::before {
+      content: '';
+      position: absolute;
+      top: -80px;
+      right: -80px;
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(201, 168, 76, 0.15) 0%, transparent 70%);
+    }
+
+    .visit-card-wrap::after {
+      content: '';
+      position: absolute;
+      bottom: -60px;
+      left: -60px;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(26, 122, 74, 0.1) 0%, transparent 70%);
+    }
+
+    .vc-header {
+      color: var(--gold);
+      font-family: 'Playfair Display', serif;
+      font-size: 0.9rem;
+      letter-spacing: 4px;
+      margin-bottom: 32px;
+      position: relative;
+      z-index: 1;
+      text-transform: uppercase;
+    }
+
+    .vc-photo {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      border: 4px solid var(--gold);
+      object-fit: cover;
+      margin: 0 auto 20px;
+      display: block;
+      background: #1a3050;
+      font-size: 3.5rem;
+      line-height: 110px;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+      box-shadow: 0 8px 24px rgba(201, 168, 76, 0.3);
+    }
+
+    .vc-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      position: relative;
+      z-index: 1;
+      margin-bottom: 4px;
+    }
+
+    .vc-spec {
+      color: var(--gold);
+      font-size: 0.8rem;
+      letter-spacing: 3px;
+      margin-bottom: 8px;
+      position: relative;
+      z-index: 1;
+      text-transform: uppercase;
+    }
+
+    .vc-hospital {
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 0.85rem;
+      margin-bottom: 28px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .vc-divider {
+      width: 60px;
+      height: 2px;
+      background: var(--gold);
+      margin: 0 auto 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .vc-info-grid {
+      display: grid;
+      gap: 10px;
+      text-align: left;
+      position: relative;
+      z-index: 1;
+      margin-bottom: 28px;
+    }
+
+    .vc-info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+      padding: 10px 14px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      border-left: 2px solid var(--gold);
+    }
+
+    .vc-info-row .label {
+      color: rgba(255, 255, 255, 0.45);
+      font-size: 0.75rem;
+      letter-spacing: 0.5px;
+    }
+
+    .vc-info-row .value {
+      font-weight: 600;
+      color: var(--white);
+    }
+
+    .vc-id-badge {
+      background: rgba(201, 168, 76, 0.15);
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      padding: 10px 24px;
+      border-radius: 50px;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 4px;
+      display: inline-block;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
+      font-family: 'Playfair Display', serif;
+    }
+
+    .vc-status {
+      display: inline-block;
+      padding: 6px 18px;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-bottom: 28px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .vc-status.paid {
+      background: rgba(26, 122, 74, 0.2);
+      color: #4caf50;
+      border: 1px solid rgba(26, 122, 74, 0.4);
+    }
+
+    .vc-status.pending {
+      background: rgba(245, 158, 11, 0.2);
+      color: #f59e0b;
+      border: 1px solid rgba(245, 158, 11, 0.4);
+    }
+
+    .vc-footer {
+      color: rgba(255, 255, 255, 0.25);
+      font-size: 0.75rem;
+      margin-top: 24px;
+      position: relative;
+      z-index: 1;
+      letter-spacing: 2px;
+    }
+
     /* ANIMATIONS */
     @keyframes fadeInDown {
       from {
@@ -1225,7 +1412,23 @@
 
 <body>
 
-  <!-- MAIN WEBSITE -->
+  <!-- ==================== VISIT CARD PAGE (shown when QR scanned) ==================== -->
+  <div id="visitCardPage">
+    <div class="visit-card-wrap">
+      <div class="vc-header">✦ MedConf 2026 · Official Delegate</div>
+      <div class="vc-photo" id="vcPhoto">👤</div>
+      <div class="vc-name" id="vcName">Dr. Name</div>
+      <div class="vc-spec" id="vcSpec">Specialty</div>
+      <div class="vc-hospital" id="vcHospital"></div>
+      <div class="vc-divider"></div>
+      <div class="vc-id-badge" id="vcId">MC-2026-0000</div>
+      <div class="vc-status" id="vcStatus">● Paid</div>
+      <div class="vc-info-grid" id="vcInfoGrid"></div>
+      <div class="vc-footer">📅 Oct 3–4, 2026 &nbsp;·&nbsp; 📍 Nagpur, Maharashtra</div>
+    </div>
+  </div>
+
+  <!-- ==================== MAIN WEBSITE ==================== -->
   <div id="mainSite">
 
     <!-- NAV -->
@@ -1248,7 +1451,7 @@
         <div class="hero-badge">International Medical Summit</div>
         <h1 class="hero-title">MedConf <span>2026</span><br>Doctor's Conference</h1>
         <p class="hero-sub">Advancing Healthcare Excellence — Connecting Medical Minds from Around the Globe</p>
-        <div class="hero-date">📅 Octomber 3-4, 2026 &nbsp;•&nbsp; 📍 Nagpur, Maharashtra, India</div>
+        <div class="hero-date">📅 October 3–4, 2026 &nbsp;•&nbsp; 📍 Nagpur, Maharashtra, India</div>
         <div class="hero-actions">
           <button class="btn-primary" onclick="openRegistration()">🩺 Register Now</button>
           <button class="btn-secondary"
@@ -1257,7 +1460,7 @@
         <div class="hero-stats">
           <div class="stat"><span class="stat-num">500+</span><span class="stat-label">Doctors</span></div>
           <div class="stat"><span class="stat-num">30+</span><span class="stat-label">Speakers</span></div>
-          <div class="stat"><span class="stat-num">3</span><span class="stat-label">Days</span></div>
+          <div class="stat"><span class="stat-num">2</span><span class="stat-label">Days</span></div>
           <div class="stat"><span class="stat-num">20+</span><span class="stat-label">Sessions</span></div>
         </div>
       </div>
@@ -1270,7 +1473,7 @@
           <div class="section-tag">About the Conference</div>
           <h2 class="section-title">Where Medical Excellence Meets Innovation</h2>
           <p class="section-sub">MedConf 2026 brings together distinguished physicians, researchers, and healthcare
-            leaders for three transformative days of knowledge exchange, cutting-edge research presentations, and
+            leaders for two transformative days of knowledge exchange, cutting-edge research presentations, and
             meaningful networking.</p>
           <div class="about-features">
             <div class="feature-card">
@@ -1291,15 +1494,13 @@
             </div>
           </div>
         </div>
-        <div class="about-image">
-          <span class="about-icon">🏥</span>
-        </div>
+        <div class="about-image"><span class="about-icon">🏥</span></div>
       </div>
     </section>
 
     <!-- SPEAKERS -->
     <section class="speakers" id="speakers">
-      <div style="text-align:center; max-width:700px; margin:0 auto 0">
+      <div style="text-align:center;max-width:700px;margin:0 auto 0">
         <div class="section-tag">Featured Speakers</div>
         <h2 class="section-title">Renowned Medical Experts</h2>
       </div>
@@ -1345,9 +1546,9 @@
 
     <!-- SCHEDULE -->
     <section class="schedule" id="schedule">
-      <div style="text-align:center; max-width:700px; margin:0 auto">
+      <div style="text-align:center;max-width:700px;margin:0 auto">
         <div class="section-tag" style="color:var(--gold-light)">Conference Program</div>
-        <h2 class="section-title" style="color:var(--white)">3-Day Schedule</h2>
+        <h2 class="section-title" style="color:var(--white)">2-Day Schedule</h2>
       </div>
       <div class="schedule-list">
         <div class="schedule-item">
@@ -1365,6 +1566,13 @@
           </div>
         </div>
         <div class="schedule-item">
+          <div class="schedule-time">Day 1 · 14:00</div>
+          <div class="schedule-info">
+            <h4>Oncology & Research Symposium</h4>
+            <p>Latest breakthroughs in cancer research</p>
+          </div>
+        </div>
+        <div class="schedule-item">
           <div class="schedule-time">Day 2 · 09:30</div>
           <div class="schedule-info">
             <h4>Surgical Innovations Workshop</h4>
@@ -1374,19 +1582,12 @@
         <div class="schedule-item">
           <div class="schedule-time">Day 2 · 14:00</div>
           <div class="schedule-info">
-            <h4>Oncology & Research Symposium</h4>
-            <p>Latest breakthroughs in cancer research</p>
-          </div>
-        </div>
-        <div class="schedule-item">
-          <div class="schedule-time">Day 3 · 10:00</div>
-          <div class="schedule-info">
             <h4>Pediatrics & Public Health</h4>
             <p>Community health initiatives and child welfare</p>
           </div>
         </div>
         <div class="schedule-item">
-          <div class="schedule-time">Day 3 · 16:00</div>
+          <div class="schedule-time">Day 2 · 16:00</div>
           <div class="schedule-info">
             <h4>Award Ceremony & Valedictory</h4>
             <p>Recognition of excellence and closing address</p>
@@ -1402,8 +1603,7 @@
       <p class="section-sub" style="text-align:center;margin:0 auto">Share this QR code with doctors to access the
         conference website and register.</p>
       <div class="qr-box">
-        <img id="imgPreview" class="img-preview" src="/qr_code_192_168_100_88_5500.png" alt="preview">
-        <div id="websiteQR" style="margin-left: 30px;"></div>
+        <div id="websiteQR"></div>
         <p>📱 Scan to open MedConf 2026</p>
         <div class="qr-link" id="siteUrl"></div>
       </div>
@@ -1427,17 +1627,17 @@
   </div><!-- end mainSite -->
 
 
-  <!-- ADMIN PAGE -->
+  <!-- ==================== ADMIN PAGE ==================== -->
   <div id="adminPage">
     <div class="admin-layout">
       <div class="admin-sidebar">
         <div class="admin-logo">✦ MEDCONF<br><small
             style="font-size:0.7rem;color:rgba(255,255,255,0.4);font-family:'DM Sans',sans-serif">ADMIN PORTAL</small>
         </div>
-        <div class="admin-nav-item active" onclick="switchAdminTab('dashboard')">📊 Dashboard</div>
-        <div class="admin-nav-item" onclick="switchAdminTab('doctors')">👨‍⚕️ Registered Doctors</div>
-        <div class="admin-nav-item" onclick="switchAdminTab('payments')">💳 Payment Status</div>
-        <div class="admin-nav-item" onclick="switchAdminTab('qrcodes')">📱 Doctor QR Codes</div>
+        <div class="admin-nav-item active" onclick="switchAdminTab('dashboard',event)">📊 Dashboard</div>
+        <div class="admin-nav-item" onclick="switchAdminTab('doctors',event)">👨‍⚕️ Registered Doctors</div>
+        <div class="admin-nav-item" onclick="switchAdminTab('payments',event)">💳 Payment Status</div>
+        <div class="admin-nav-item" onclick="switchAdminTab('qrcodes',event)">📱 Doctor QR Codes</div>
         <div style="flex:1"></div>
         <div class="admin-nav-item" onclick="hideAdmin()">← Back to Site</div>
       </div>
@@ -1476,11 +1676,9 @@
                   <th>Doctor ID</th>
                   <th>Name</th>
                   <th>Mobile</th>
-                  <th>Email</th>
                   <th>Specialty</th>
-                  <th>Hospital</th>
-                  <th>City</th>
-                  <th>Reg Date</th>
+                  <th>Status</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody id="dashboardBody"></tbody>
@@ -1499,7 +1697,9 @@
                   <th>Doctor ID</th>
                   <th>Name</th>
                   <th>Mobile</th>
+                  <th>Email</th>
                   <th>Specialty</th>
+                  <th>Hospital</th>
                   <th>City</th>
                   <th>Reg Date</th>
                 </tr>
@@ -1550,9 +1750,8 @@
         <button class="close-btn" onclick="closeModal('regModal')">✕</button>
       </div>
       <div class="modal-body">
-        <div class="form-grid" id="regForm">
-          <div class="form-group"><label>First Name *</label><input id="fName" placeholder="Dr. First Name" required>
-          </div>
+        <div class="form-grid">
+          <div class="form-group"><label>First Name *</label><input id="fName" placeholder="First Name" required></div>
           <div class="form-group"><label>Last Name *</label><input id="lName" placeholder="Last Name" required></div>
           <div class="form-group"><label>Mobile Number *</label><input id="mobile" placeholder="+91 XXXXX XXXXX"
               maxlength="15"></div>
@@ -1582,7 +1781,7 @@
           <div class="form-group"><label>City</label><input id="city" placeholder="City"></div>
           <div class="form-group full"><label>Photo (Upload)</label>
             <div class="img-upload-area" onclick="document.getElementById('photoInput').click()">
-              <img id="imgPreview" class="img-preview" src="" alt="preview">
+              <img id="imgPreviewUpload" class="img-preview-upload" src="" alt="preview">
               <div id="uploadText">📸 Click to upload your photo</div>
               <p>JPG, PNG – max 2MB</p>
             </div>
@@ -1646,13 +1845,13 @@
           <h3>Welcome to MedConf 2026!</h3>
           <p>Your registration is confirmed. Your unique Doctor ID is:</p>
           <div class="doctor-id-badge" id="displayDoctorId">MC-2026-XXXX</div>
-          <p style="font-size:0.85rem;color:var(--gray);margin-bottom:16px">Your personal QR Code for entry & ID card:
-          </p>
+          <p style="font-size:0.85rem;color:var(--gray);margin-bottom:16px">Scan this QR code to view your digital visit
+            card on any device:</p>
           <div class="success-qr">
             <div id="successQR"></div>
           </div>
           <div class="whatsapp-msg">
-            <div class="wa-header">💬 WhatsApp Message Sent to <span id="waNumber"></span></div>
+            <div class="wa-header">💬 WhatsApp Message Preview for <span id="waNumber"></span></div>
             <p id="waMessage"></p>
           </div>
           <button class="form-submit" style="margin-top:0" onclick="closeModal('successModal')">Done – Close</button>
@@ -1679,8 +1878,95 @@
 
 
   <script>
+    // ==================== VISIT CARD QR LOGIC ====================
+    // Build a self-contained URL that points to THIS same page with ?card=1&... params
+    // Works on any device as long as they can reach the same server
+    function buildVisitCardURL(d) {
+      const base = window.location.origin + window.location.pathname;
+      // NOTE: photo is NOT included in URL — base64 images are huge and break QR codes.
+      // Photo is stored in localStorage and looked up by doctor ID on the visit card page.
+      const params = new URLSearchParams({
+        card: '1',
+        id: d.id || '',
+        n: d.fName + ' ' + d.lName,
+        s: d.specialty,
+        p: d.paid ? '1' : '0',
+        m: d.mobile,
+        h: d.hospital || '',
+        c: d.city || '',
+        r: d.regNo || '',
+        dt: d.regDate || ''
+      });
+      return base + '?' + params.toString();
+    }
+
+    // ==================== CHECK IF QR SCAN (URL has ?card=1) ====================
+    (function checkVisitCardMode() {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('card') !== '1') return;
+
+      // Hide main site, show visit card
+      document.getElementById('mainSite').style.display = 'none';
+      document.getElementById('visitCardPage').classList.add('active');
+
+      const name = params.get('n') || 'Doctor';
+      const id = params.get('id') || '';
+      const spec = params.get('s') || '';
+      const paid = params.get('p') === '1';
+      const mobile = params.get('m') || '';
+      const hospital = params.get('h') || '';
+      const city = params.get('c') || '';
+      const regNo = params.get('r') || '';
+      const regDate = params.get('dt') || '';
+      // Look up photo from localStorage by doctor ID (photo is NOT in URL — too large for QR)
+      let photo = '';
+      try {
+        const allDoctors = JSON.parse(localStorage.getItem('medconf_doctors') || '[]');
+        const match = allDoctors.find(function (d) { return d.id === id; });
+        if (match && match.photo) photo = match.photo;
+      } catch (e) { }
+
+      document.title = 'Dr. ' + name + ' – MedConf 2026';
+
+      // Photo
+      const vcPhoto = document.getElementById('vcPhoto');
+      if (photo && photo.startsWith('data:image')) {
+        const img = document.createElement('img');
+        img.src = photo;
+        img.className = 'vc-photo';
+        img.alt = name;
+        vcPhoto.parentNode.replaceChild(img, vcPhoto);
+      } else {
+        vcPhoto.textContent = '👤';
+      }
+
+      document.getElementById('vcName').textContent = 'Dr. ' + name;
+      document.getElementById('vcSpec').textContent = spec;
+      document.getElementById('vcHospital').textContent = hospital || '';
+      document.getElementById('vcId').textContent = id;
+
+      const statusEl = document.getElementById('vcStatus');
+      statusEl.textContent = paid ? '✓ Confirmed & Paid' : '⏳ Payment Pending';
+      statusEl.className = 'vc-status ' + (paid ? 'paid' : 'pending');
+
+      const infoGrid = document.getElementById('vcInfoGrid');
+      const rows = [
+        { label: 'Mobile', value: mobile },
+        { label: 'Registration No.', value: regNo || '—' },
+        { label: 'City', value: city || '—' },
+        { label: 'Registered On', value: regDate || '—' }
+      ];
+      infoGrid.innerHTML = rows.map(r => `
+        <div class="vc-info-row">
+          <span class="label">${r.label}</span>
+          <span class="value">${r.value}</span>
+        </div>
+      `).join('');
+    })();
+
     // ==================== DATA STORE ====================
-    let doctors = JSON.parse(localStorage.getItem('medconf_doctors') || '[]');
+    let doctors = [];
+    try { doctors = JSON.parse(localStorage.getItem('medconf_doctors') || '[]'); } catch (e) { doctors = []; }
     let currentDoctor = null;
 
     function saveData() {
@@ -1688,22 +1974,20 @@
     }
 
     // ==================== QR CODE GENERATION ====================
-    function generateQR(elementId, text, size = 128) {
+    function generateQR(elementId, text, size) {
+      size = size || 128;
       const el = document.getElementById(elementId);
       if (!el) return;
       el.innerHTML = '';
-      new QRCode(el, { text, width: size, height: size, colorDark: '#0a1628', colorLight: '#ffffff' });
+      new QRCode(el, { text: text, width: size, height: size, colorDark: '#0a1628', colorLight: '#ffffff' });
     }
 
-    // ==================== WEBSITE QR CODE ====================
-    window.addEventListener('load', () => {
-      const url = 'http://192.168.100.88:5500';
+    // ==================== INIT ====================
+    window.addEventListener('load', function () {
+      const url = window.location.origin + window.location.pathname;
       document.getElementById('siteUrl').textContent = url;
       generateQR('websiteQR', url, 160);
-
-      // Generate payment QR
       generateQR('paymentQR', 'upi://pay?pa=medconf2026@hdfc&pn=MedConf2026&am=2500&cu=INR&tn=ConferenceRegistration', 160);
-
       updateAdminStats();
       renderAdminTables();
     });
@@ -1720,8 +2004,8 @@
     function previewPhoto(input) {
       if (input.files && input.files[0]) {
         const reader = new FileReader();
-        reader.onload = (e) => {
-          const preview = document.getElementById('imgPreview');
+        reader.onload = function (e) {
+          const preview = document.getElementById('imgPreviewUpload');
           preview.src = e.target.result;
           preview.style.display = 'block';
           document.getElementById('uploadText').textContent = '✓ Photo uploaded';
@@ -1741,78 +2025,66 @@
         alert('Please fill all required fields (*)');
         return;
       }
-      if (!/^[0-9+\s-]{10,15}$/.test(mobile)) {
+      if (!/^[0-9+\s\-]{10,15}$/.test(mobile)) {
         alert('Please enter a valid mobile number');
         return;
       }
 
+      const preview = document.getElementById('imgPreviewUpload');
       currentDoctor = {
-        fName, lName, mobile, email, specialty,
+        fName: fName, lName: lName, mobile: mobile, email: email, specialty: specialty,
         regNo: document.getElementById('regNo').value,
         hospital: document.getElementById('hospital').value,
         city: document.getElementById('city').value,
-        photo: document.getElementById('imgPreview').src || '',
+        photo: (preview && preview.style.display !== 'none') ? preview.src : '',
         paid: false,
         regDate: new Date().toLocaleDateString('en-IN'),
         id: null
       };
 
       closeModal('regModal');
-      setTimeout(() => document.getElementById('payModal').classList.add('active'), 300);
+      setTimeout(function () { document.getElementById('payModal').classList.add('active'); }, 300);
     }
 
     function confirmPayment() {
       if (!currentDoctor) return;
-
-      // Generate unique ID
       const num = String(doctors.length + 1).padStart(4, '0');
-      const doctorId = `MC-2026-${num}`;
-      currentDoctor.id = doctorId;
+      currentDoctor.id = 'MC-2026-' + num;
       currentDoctor.paid = true;
-
-      doctors.push({ ...currentDoctor });
+      doctors.push(Object.assign({}, currentDoctor));
       saveData();
       updateAdminStats();
       renderAdminTables();
-
       closeModal('payModal');
-      setTimeout(() => showSuccess(currentDoctor), 300);
+      setTimeout(function () { showSuccess(currentDoctor); }, 300);
     }
 
     function showSuccess(doc) {
       document.getElementById('displayDoctorId').textContent = doc.id;
       document.getElementById('waNumber').textContent = doc.mobile;
       document.getElementById('waMessage').textContent =
-        `Dear Dr. ${doc.fName} ${doc.lName},\n\n✅ Your registration for MedConf 2026 is CONFIRMED!\n\n` +
-        `🆔 Doctor ID: ${doc.id}\n📅 Event: Oct 3-4, 2026\n📍 Venue: Nagpur, Maharashtra\n\n` +
-        `Please save your QR code for entry verification.\n\nSee you at the conference! 🏥\n\n– MedConf 2026 Team`;
+        'Dear Dr. ' + doc.fName + ' ' + doc.lName + ',\n\n' +
+        '✅ Your registration for MedConf 2026 is CONFIRMED!\n\n' +
+        '🆔 Doctor ID: ' + doc.id + '\n' +
+        '📅 Event: Oct 3–4, 2026\n' +
+        '📍 Venue: Nagpur, Maharashtra\n\n' +
+        'Scan your personal QR code for digital visit card & entry.\n\n' +
+        '– MedConf 2026 Team';
 
-      document.getElementById('successQR').innerHTML = '';
-      new QRCode(document.getElementById('successQR'), {
-        text: JSON.stringify({ id: doc.id, name: `Dr. ${doc.fName} ${doc.lName}`, mobile: doc.mobile, specialty: doc.specialty }),
-        width: 150, height: 150, colorDark: '#0a1628', colorLight: '#ffffff'
-      });
+      const successQREl = document.getElementById('successQR');
+      successQREl.innerHTML = '';
+      const cardUrl = buildVisitCardURL(doc);
+      new QRCode(successQREl, { text: cardUrl, width: 150, height: 150, colorDark: '#0a1628', colorLight: '#ffffff' });
 
       document.getElementById('successModal').classList.add('active');
     }
 
     // ==================== ADMIN ====================
-    // ==================== ADMIN LOGIN ====================
-
     function showAdmin() {
-      const password = prompt("Enter Admin Password");
-
-      // Change this password
-      const adminPassword = "admin123";
-
-      if (password !== adminPassword) {
-        alert("❌ Wrong Password");
-        return;
-      }
-
+      const password = prompt('Enter Admin Password');
+      if (password !== 'admin123') { alert('❌ Wrong Password'); return; }
       document.getElementById('mainSite').style.display = 'none';
       document.getElementById('adminPage').style.display = 'block';
-
       updateAdminStats();
       renderAdminTables();
     }
@@ -1822,135 +2094,49 @@
       document.getElementById('mainSite').style.display = 'block';
     }
 
-    function switchAdminTab(tab) {
-      ['Dashboard', 'Doctors', 'Payments', 'QRCodes'].forEach(t => {
-        document.getElementById(`admin${t}`).style.display = 'none';
+    function switchAdminTab(tab, evt) {
+      ['Dashboard', 'Doctors', 'Payments', 'QRCodes'].forEach(function (t) {
+        document.getElementById('admin' + t).style.display = 'none';
       });
-      document.querySelectorAll('.admin-nav-item').forEach(el => el.classList.remove('active'));
-      event.currentTarget.classList.add('active');
-
-      const titles = { dashboard: 'Dashboard', doctors: 'Registered Doctors', payments: 'Payment Status', qrcodes: 'Doctor QR Codes' };
+      document.querySelectorAll('.admin-nav-item').forEach(function (el) { el.classList.remove('active'); });
+      if (evt && evt.currentTarget) evt.currentTarget.classList.add('active');
+      var titles = { dashboard: 'Dashboard', doctors: 'Registered Doctors', payments: 'Payment Status', qrcodes: 'Doctor QR Codes' };
       document.getElementById('adminTabTitle').textContent = titles[tab];
-      document.getElementById(`admin${tab.charAt(0).toUpperCase() + tab.slice(1)}`).style.display = 'block';
-
+      document.getElementById('admin' + tab.charAt(0).toUpperCase() + tab.slice(1)).style.display = 'block';
       if (tab === 'qrcodes') renderQRCodes();
     }
 
     function updateAdminStats() {
-      const paid = doctors.filter(d => d.paid).length;
+      const paid = doctors.filter(function (d) { return d.paid; }).length;
       document.getElementById('statTotal').textContent = doctors.length;
       document.getElementById('statPaid').textContent = paid;
       document.getElementById('statPending').textContent = doctors.length - paid;
-      document.getElementById('statRevenue').textContent = `₹${(paid * 2500).toLocaleString('en-IN')}`;
+      document.getElementById('statRevenue').textContent = '₹' + (paid * 2500).toLocaleString('en-IN');
     }
 
     function renderAdminTables() {
-
       const dbody = document.getElementById('dashboardBody');
       const docBody = document.getElementById('doctorsBody');
       const payBody = document.getElementById('paymentsBody');
-
-      dbody.innerHTML = '';
-      docBody.innerHTML = '';
-      payBody.innerHTML = '';
+      dbody.innerHTML = ''; docBody.innerHTML = ''; payBody.innerHTML = '';
 
       if (doctors.length === 0) {
-
-        const emptyRow = `
-      <tr>
-        <td colspan="10" style="text-align:center;padding:40px;color:gray">
-          No Doctors Registered Yet
-        </td>
-      </tr>
-    `;
-
-        dbody.innerHTML = emptyRow;
-        docBody.innerHTML = emptyRow;
-        payBody.innerHTML = emptyRow;
-
+        const empty = '<tr><td colspan="10" style="text-align:center;padding:40px;color:gray">No Doctors Registered Yet</td></tr>';
+        dbody.innerHTML = empty; docBody.innerHTML = empty; payBody.innerHTML = empty;
         return;
       }
 
-      doctors.forEach((d, i) => {
+      doctors.forEach(function (d, i) {
+        const payBadge = d.paid
+          ? '<span class="status-badge status-paid">✓ Paid</span>'
+          : '<span class="status-badge status-pending">Pending</span>';
+        const photo = d.photo ? '<img src="' + d.photo + '" style="width:45px;height:45px;border-radius:50%;object-fit:cover">' : '👤';
 
-        const paymentStatus = d.paid
-          ? `<span class="status-badge status-paid">✓ Paid</span>`
-          : `<span class="status-badge status-pending">Pending</span>`;
+        dbody.innerHTML += '<tr><td>' + (i + 1) + '</td><td>' + photo + '</td><td>' + d.id + '</td><td>Dr. ' + d.fName + ' ' + d.lName + '</td><td>' + d.mobile + '</td><td>' + d.specialty + '</td><td>' + payBadge + '</td><td><div class="admin-actions"><button class="action-btn action-view" onclick="viewIdCard(' + i + ')">View ID</button>' + (!d.paid ? '<button class="action-btn action-verify" onclick="markPaid(' + i + ')">Mark Paid</button>' : '') + '</div></td></tr>';
 
-        // ================= DASHBOARD =================
+        docBody.innerHTML += '<tr><td>' + (i + 1) + '</td><td>' + photo + '</td><td>' + d.id + '</td><td>Dr. ' + d.fName + ' ' + d.lName + '</td><td>' + d.mobile + '</td><td>' + d.email + '</td><td>' + d.specialty + '</td><td>' + (d.hospital || '-') + '</td><td>' + (d.city || '-') + '</td><td>' + d.regDate + '</td></tr>';
 
-        dbody.innerHTML += `
-      <tr>
-        <td>${i + 1}</td>
-        <td>${d.id}</td>
-        <td>Dr. ${d.fName} ${d.lName}</td>
-        <td>${d.mobile}</td>
-        <td>${d.specialty}</td>
-        <td>${paymentStatus}</td>
-        <td>
-          <div class="admin-actions">
-            <button class="action-btn action-view"
-              onclick="viewIdCard(${i})">
-              View ID
-            </button>
-
-            ${!d.paid
-            ? `
-              <button class="action-btn action-verify"
-                onclick="markPaid(${i})">
-                Mark Paid
-              </button>
-              `
-            : ''
-          }
-          </div>
-        </td>
-      </tr>
-    `;
-
-        // ================= DOCTORS =================
-
-        const photo = d.photo
-          ? `<img src="${d.photo}" style="width:45px;height:45px;border-radius:50%;object-fit:cover">`
-          : '👤';
-
-        docBody.innerHTML += `
-      <tr>
-        <td>${i + 1}</td>
-        <td>${photo}</td>
-        <td>${d.id}</td>
-        <td>Dr. ${d.fName} ${d.lName}</td>
-        <td>${d.mobile}</td>
-        <td>${d.email}</td>
-        <td>${d.specialty}</td>
-        <td>${d.hospital || '-'}</td>
-        <td>${d.city || '-'}</td>
-        <td>${d.regDate}</td>
-      </tr>
-    `;
-
-        // ================= PAYMENTS =================
-
-        payBody.innerHTML += `
-      <tr>
-        <td>${i + 1}</td>
-        <td>${d.id}</td>
-        <td>Dr. ${d.fName} ${d.lName}</td>
-        <td>₹2500</td>
-        <td>${paymentStatus}</td>
-        <td>
-          ${!d.paid
-            ? `
-            <button class="action-btn action-verify"
-              onclick="markPaid(${i})">
-              Verify Payment
-            </button>
-            `
-            : '<span style="color:green;font-weight:bold">Confirmed</span>'
-          }
-        </td>
-      </tr>
-    `;
+        payBody.innerHTML += '<tr><td>' + (i + 1) + '</td><td>' + d.id + '</td><td>Dr. ' + d.fName + ' ' + d.lName + '</td><td>₹2500</td><td>' + payBadge + '</td><td>' + (!d.paid ? '<button class="action-btn action-verify" onclick="markPaid(' + i + ')">Verify Payment</button>' : '<span style="color:green;font-weight:bold">Confirmed</span>') + '</td></tr>';
       });
     }
 
@@ -1959,7 +2145,7 @@
       saveData();
       updateAdminStats();
       renderAdminTables();
-      alert(`✅ Payment confirmed for Dr. ${doctors[index].fName} ${doctors[index].lName}`);
+      alert('✅ Payment confirmed for Dr. ' + doctors[index].fName + ' ' + doctors[index].lName);
     }
 
     function renderQRCodes() {
@@ -1969,153 +2155,63 @@
         grid.innerHTML = '<p style="color:var(--gray);grid-column:1/-1;text-align:center;padding:40px">No doctors registered yet</p>';
         return;
       }
-      doctors.forEach((d, i) => {
+      doctors.forEach(function (d, i) {
         const card = document.createElement('div');
         card.style.cssText = 'background:white;border-radius:12px;padding:24px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.06)';
-        card.innerHTML = `
-      <div style="font-weight:700;color:var(--navy);font-size:0.9rem;margin-bottom:4px">Dr. ${d.fName} ${d.lName}</div>
-      <div style="color:var(--gold);font-size:0.75rem;margin-bottom:12px">${d.id}</div>
-      <div id="adminQR_${i}"></div>
-      <div style="color:var(--gray);font-size:0.75rem;margin-top:8px">${d.specialty}</div>
-      <div style="margin-top:8px">${d.paid ? '<span class="status-badge status-paid">✓ Paid</span>' : '<span class="status-badge status-pending">Pending</span>'}</div>
-    `;
+        card.innerHTML = '<div style="font-weight:700;color:var(--navy);font-size:0.9rem;margin-bottom:4px">Dr. ' + d.fName + ' ' + d.lName + '</div><div style="color:var(--gold);font-size:0.75rem;margin-bottom:12px">' + d.id + '</div><div id="adminQR_' + i + '"></div><div style="color:var(--gray);font-size:0.75rem;margin-top:8px">' + d.specialty + '</div><div style="margin-top:8px">' + (d.paid ? '<span class="status-badge status-paid">✓ Paid</span>' : '<span class="status-badge status-pending">Pending</span>') + '</div>';
         grid.appendChild(card);
-        setTimeout(() => {
-          new QRCode(document.getElementById(`adminQR_${i}`), {
-            text: JSON.stringify({ id: d.id, name: `Dr. ${d.fName} ${d.lName}`, mobile: d.mobile, specialty: d.specialty }),
-            width: 120, height: 120, colorDark: '#0a1628', colorLight: '#ffffff'
-          });
-        }, 50);
+        setTimeout(function () {
+          const el = document.getElementById('adminQR_' + i);
+          if (el) {
+            el.innerHTML = '';
+            new QRCode(el, { text: buildVisitCardURL(d), width: 120, height: 120, colorDark: '#0a1628', colorLight: '#ffffff' });
+          }
+        }, 50 * (i + 1));
       });
     }
 
     function viewIdCard(index) {
-
       const d = doctors[index];
-
       const card = document.getElementById('idCardContent');
+      const photo = d.photo ? '<img class="id-card-photo" src="' + d.photo + '" alt="photo">' : '<div class="id-card-photo">👤</div>';
+      card.innerHTML = '<div class="id-card-logo">✦ MEDCONF 2026</div>' + photo +
+        '<div class="id-card-name">Dr. ' + d.fName + ' ' + d.lName + '</div>' +
+        '<div class="id-card-spec">' + d.specialty.toUpperCase() + '</div>' +
+        '<div class="id-card-info">' +
+        '<div class="id-info-row"><span>Mobile</span><span>' + d.mobile + '</span></div>' +
+        '<div class="id-info-row"><span>Hospital</span><span>' + (d.hospital || '—') + '</span></div>' +
+        '<div class="id-info-row"><span>Reg. No.</span><span>' + (d.regNo || '—') + '</span></div>' +
+        '<div class="id-info-row"><span>City</span><span>' + (d.city || '—') + '</span></div>' +
+        '<div class="id-info-row"><span>Status</span><span style="color:' + (d.paid ? '#4caf50' : '#f59e0b') + '">' + (d.paid ? '✓ Paid' : 'Pending') + '</span></div>' +
+        '</div><div class="id-card-qr"><div id="idCardQR"></div></div>' +
+        '<div class="id-card-id">' + d.id + '</div>';
 
-      const photo = d.photo
-        ? `<img class="id-card-photo" src="${d.photo}" alt="photo">`
-        : `<div class="id-card-photo">👤</div>`;
-
-      card.innerHTML = `
-    <div class="id-card-logo">✦ MEDCONF 2026</div>
-
-    ${photo}
-
-    <div class="id-card-name">
-      Dr. ${d.fName} ${d.lName}
-    </div>
-
-    <div class="id-card-spec">
-      ${d.specialty.toUpperCase()}
-    </div>
-
-    <div class="id-card-info">
-
-      <div class="id-info-row">
-        <span>Mobile</span>
-        <span>${d.mobile}</span>
-      </div>
-
-      <div class="id-info-row">
-        <span>Hospital</span>
-        <span>${d.hospital || '—'}</span>
-      </div>
-
-      <div class="id-info-row">
-        <span>Reg. No.</span>
-        <span>${d.regNo || '—'}</span>
-      </div>
-
-      <div class="id-info-row">
-        <span>City</span>
-        <span>${d.city || '—'}</span>
-      </div>
-
-      <div class="id-info-row">
-        <span>Status</span>
-        <span style="color:${d.paid ? '#4caf50' : '#f59e0b'}">
-          ${d.paid ? '✓ Paid' : 'Pending'}
-        </span>
-      </div>
-
-    </div>
-
-    <div class="id-card-qr">
-      <div id="idCardQR"></div>
-    </div>
-
-    <div class="id-card-id">${d.id}</div>
-  `;
-
-      // SHOW MODAL FIRST
       document.getElementById('idCardModal').classList.add('active');
-
-      // THEN GENERATE QR
-      setTimeout(() => {
-
-        const qrContainer = document.getElementById('idCardQR');
-
-        qrContainer.innerHTML = '';
-
-        new QRCode(qrContainer, {
-          text: JSON.stringify({
-            id: d.id,
-            name: `Dr. ${d.fName} ${d.lName}`,
-            mobile: d.mobile,
-            specialty: d.specialty
-          }),
-
-          width: 100,
-          height: 100,
-          colorDark: "#0a1628",
-          colorLight: "#ffffff",
-          correctLevel: QRCode.CorrectLevel.H
-        });
-
+      setTimeout(function () {
+        const qrEl = document.getElementById('idCardQR');
+        if (qrEl) {
+          qrEl.innerHTML = '';
+          new QRCode(qrEl, { text: buildVisitCardURL(d), width: 100, height: 100, colorDark: '#0a1628', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.H });
+        }
       }, 300);
     }
 
     // ==================== EXPORT EXCEL ====================
     function exportExcel() {
-
-      if (doctors.length === 0) {
-        alert("No Data Available");
-        return;
-      }
-
-      const exportData = doctors.map((d, i) => ({
-        "S.No": i + 1,
-        "Doctor ID": d.id,
-        "First Name": d.fName,
-        "Last Name": d.lName,
-        "Mobile": d.mobile,
-        "Email": d.email,
-        "Specialty": d.specialty,
-        "Medical Registration No": d.regNo,
-        "Hospital": d.hospital,
-        "City": d.city,
-        "Payment Status": d.paid ? "Paid" : "Pending",
-        "Amount": d.paid ? "2500" : "0",
-        "Registration Date": d.regDate
-      }));
-
-      const worksheet = XLSX.utils.json_to_sheet(exportData);
-
-      const workbook = XLSX.utils.book_new();
-
-      XLSX.utils.book_append_sheet(
-        workbook,
-        worksheet,
-        "Registered Doctors"
-      );
-
-      XLSX.writeFile(
-        workbook,
-        `MedConf_Doctors_${Date.now()}.xlsx`
-      );
+      if (doctors.length === 0) { alert('No Data Available'); return; }
+      const data = doctors.map(function (d, i) {
+        return {
+          'S.No': i + 1, 'Doctor ID': d.id, 'First Name': d.fName, 'Last Name': d.lName,
+          'Mobile': d.mobile, 'Email': d.email, 'Specialty': d.specialty,
+          'Medical Registration No': d.regNo, 'Hospital': d.hospital, 'City': d.city,
+          'Payment Status': d.paid ? 'Paid' : 'Pending', 'Amount': d.paid ? '2500' : '0',
+          'Registration Date': d.regDate
+        };
+      });
+      const ws = XLSX.utils.json_to_sheet(data);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Registered Doctors');
+      XLSX.writeFile(wb, 'MedConf_Doctors_' + Date.now() + '.xlsx');
     }
   </script>
 </body>
