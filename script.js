@@ -266,11 +266,74 @@ function updateAdminStats() {
     document.getElementById('statRevenue').textContent = '₹' + (paid * 2500).toLocaleString('en-IN');
 }
 
+function filterDashboard(query) {
+    const clearBtn = document.getElementById('searchClearBtn');
+    const countEl = document.getElementById('searchResultCount');
+    clearBtn.style.display = query.trim() ? 'block' : 'none';
+
+    const q = query.trim().toLowerCase();
+    const dbody = document.getElementById('dashboardBody');
+    dbody.innerHTML = '';
+
+    const filtered = q
+        ? doctors.filter(function (d) {
+            return ('Dr. ' + d.fName + ' ' + d.lName).toLowerCase().includes(q);
+          })
+        : doctors;
+
+    if (q) {
+        countEl.innerHTML = '<strong>' + filtered.length + '</strong> of ' + doctors.length + ' doctor' + (doctors.length !== 1 ? 's' : '') + ' found';
+    } else {
+        countEl.innerHTML = '';
+    }
+
+    if (filtered.length === 0) {
+        dbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:40px;color:gray">No doctors match "<strong>' + escapeHtml(query) + '</strong>"</td></tr>';
+        return;
+    }
+
+    filtered.forEach(function (d, i) {
+        const realIndex = doctors.indexOf(d);
+        const payBadge = d.paid
+            ? '<span class="status-badge status-paid">✓ Paid</span>'
+            : '<span class="status-badge status-pending">Pending</span>';
+        const photo = d.photo ? '<img src="' + d.photo + '" style="width:45px;height:45px;border-radius:50%;object-fit:cover">' : '👤';
+        const fullName = 'Dr. ' + d.fName + ' ' + d.lName;
+        const displayName = q ? highlightMatch(fullName, q) : fullName;
+        dbody.innerHTML += '<tr><td>' + (i + 1) + '</td><td>' + photo + '</td><td>' + d.id + '</td><td>' + displayName + '</td><td>' + d.mobile + '</td><td>' + d.specialty + '</td><td>' + payBadge + '</td><td><div class="admin-actions"><button class="action-btn action-view" onclick="viewIdCard(' + realIndex + ')">View ID</button>' + (!d.paid ? '<button class="action-btn action-verify" onclick="markPaid(' + realIndex + ')">Mark Paid</button>' : '') + '</div></td></tr>';
+    });
+}
+
+function highlightMatch(text, query) {
+    const idx = text.toLowerCase().indexOf(query.toLowerCase());
+    if (idx === -1) return text;
+    return text.slice(0, idx) + '<mark class="search-highlight">' + text.slice(idx, idx + query.length) + '</mark>' + text.slice(idx + query.length);
+}
+
+function escapeHtml(text) {
+    return text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function clearSearch() {
+    const input = document.getElementById('dashboardSearch');
+    input.value = '';
+    input.focus();
+    filterDashboard('');
+}
+
 function renderAdminTables() {
     const dbody = document.getElementById('dashboardBody');
     const docBody = document.getElementById('doctorsBody');
     const payBody = document.getElementById('paymentsBody');
     dbody.innerHTML = ''; docBody.innerHTML = ''; payBody.innerHTML = '';
+
+    // Reset search when re-rendering
+    const searchInput = document.getElementById('dashboardSearch');
+    if (searchInput) { searchInput.value = ''; }
+    const clearBtn = document.getElementById('searchClearBtn');
+    if (clearBtn) clearBtn.style.display = 'none';
+    const countEl = document.getElementById('searchResultCount');
+    if (countEl) countEl.innerHTML = '';
 
     if (doctors.length === 0) {
         const empty = '<tr><td colspan="10" style="text-align:center;padding:40px;color:gray">No Doctors Registered Yet</td></tr>';

@@ -276,6 +276,16 @@
 
         <!-- DASHBOARD -->
         <div id="adminDashboard">
+          <div class="dashboard-search-wrap">
+            <div class="dashboard-search-box">
+              <span class="search-icon">🔍</span>
+              <input type="text" id="dashboardSearch" placeholder="Search doctor by name..."
+                oninput="filterDashboard(this.value)" autocomplete="off">
+              <button class="search-clear-btn" id="searchClearBtn" onclick="clearSearch()"
+                style="display:none">✕</button>
+            </div>
+            <div class="search-result-count" id="searchResultCount"></div>
+          </div>
           <div class="admin-stats">
             <div class="admin-stat-card">
               <div class="num" id="statTotal">0</div>
@@ -315,6 +325,7 @@
 
         <!-- DOCTORS -->
         <div id="adminDoctors" style="display:none">
+
           <div class="admin-table-wrap">
             <table class="admin-table">
               <thead>
