@@ -8,6 +8,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap"
     rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <style>
@@ -492,6 +493,157 @@
 
     footer span {
       color: var(--gold);
+    }
+
+    /* COUNTDOWN */
+    .countdown-section {
+      background: var(--navy);
+      padding: 60px 60px 80px;
+      text-align: center;
+      border-top: 1px solid rgba(201, 168, 76, 0.15);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .countdown-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 100%, rgba(201, 168, 76, 0.07) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .countdown-label {
+      color: var(--gold);
+      font-size: 0.78rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .countdown-heading {
+      font-family: 'Playfair Display', serif;
+      color: var(--white);
+      font-size: clamp(1.1rem, 4vw, 1.7rem);
+      margin-bottom: 36px;
+      font-weight: 400;
+      opacity: 0.85;
+      padding: 0 16px;
+    }
+
+    .countdown-grid {
+      display: inline-grid;
+      grid-template-columns: repeat(4, 1fr);
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(201, 168, 76, 0.25);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(201, 168, 76, 0.08) inset;
+      width: min(600px, 92vw);
+    }
+
+    .countdown-unit {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 28px 20px;
+      position: relative;
+    }
+
+    .countdown-unit:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 20%;
+      height: 60%;
+      width: 1px;
+      background: rgba(201, 168, 76, 0.2);
+    }
+
+    .countdown-num {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 7vw, 3.6rem);
+      font-weight: 700;
+      color: var(--gold);
+      line-height: 1;
+      letter-spacing: -1px;
+      min-width: 2ch;
+      text-align: center;
+      transition: transform 0.2s ease, color 0.2s ease;
+    }
+
+    .countdown-num.flip {
+      transform: scale(1.12);
+      color: var(--gold-light);
+    }
+
+    .countdown-unit-label {
+      color: rgba(255, 255, 255, 0.45);
+      font-size: clamp(0.6rem, 1.8vw, 0.72rem);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-top: 8px;
+    }
+
+    .countdown-ended {
+      font-family: 'Playfair Display', serif;
+      color: var(--gold);
+      font-size: clamp(1.2rem, 5vw, 1.8rem);
+      padding: 28px 20px;
+    }
+
+    /* Tablet: slightly tighter */
+    @media (max-width: 600px) {
+      .countdown-section {
+        padding: 44px 16px 56px;
+      }
+
+      .countdown-heading {
+        margin-bottom: 28px;
+      }
+
+      .countdown-grid {
+        /* Switch to 2×2 grid on small screens */
+        grid-template-columns: repeat(2, 1fr);
+        width: min(340px, 92vw);
+        border-radius: 14px;
+      }
+
+      /* Re-draw dividers for 2×2 layout */
+      .countdown-unit::after {
+        display: none !important;
+      }
+
+      /* right border for col 1 */
+      .countdown-unit:nth-child(1),
+      .countdown-unit:nth-child(3) {
+        border-right: 1px solid rgba(201, 168, 76, 0.2);
+      }
+
+      /* bottom border for row 1 */
+      .countdown-unit:nth-child(1),
+      .countdown-unit:nth-child(2) {
+        border-bottom: 1px solid rgba(201, 168, 76, 0.2);
+      }
+
+      .countdown-unit {
+        padding: 22px 16px;
+      }
+
+      .countdown-unit-label {
+        letter-spacing: 2px;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .countdown-grid {
+        width: 96vw;
+      }
+
+      .countdown-unit {
+        padding: 18px 10px;
+      }
     }
 
     /* QR SECTION */
@@ -1466,6 +1618,30 @@
       </div>
     </section>
 
+    <!-- COUNTDOWN -->
+    <div class="countdown-section" id="countdown-section">
+      <div class="countdown-label">Conference Begins In</div>
+      <div class="countdown-heading">October 2, 2026 &nbsp;·&nbsp; Nagpur, Maharashtra</div>
+      <div class="countdown-grid" id="countdownGrid">
+        <div class="countdown-unit">
+          <div class="countdown-num" id="cd-days">--</div>
+          <div class="countdown-unit-label">Days</div>
+        </div>
+        <div class="countdown-unit">
+          <div class="countdown-num" id="cd-hours">--</div>
+          <div class="countdown-unit-label">Hours</div>
+        </div>
+        <div class="countdown-unit">
+          <div class="countdown-num" id="cd-mins">--</div>
+          <div class="countdown-unit-label">Minutes</div>
+        </div>
+        <div class="countdown-unit">
+          <div class="countdown-num" id="cd-secs">--</div>
+          <div class="countdown-unit-label">Seconds</div>
+        </div>
+      </div>
+    </div>
+
     <!-- ABOUT -->
     <section class="about" id="about">
       <div class="about-grid">
@@ -1964,13 +2140,42 @@
       `).join('');
     })();
 
+    // ==================== SUPABASE CONFIG ====================
+    const SUPABASE_URL = 'https://jdpkejxyzrpgdrmlbhtm.supabase.co';   // 🔴 Replace this
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpkcGtlanh5enJwZ2RybWxiaHRtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3MDc2MTAsImV4cCI6MjA5NTI4MzYxMH0.DMIbKPm8r9TZiCpyjD1a8rI_6PI-z99VRVqzLmvqqDo'; // 🔴 Replace this
+    const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
     // ==================== DATA STORE ====================
     let doctors = [];
-    try { doctors = JSON.parse(localStorage.getItem('medconf_doctors') || '[]'); } catch (e) { doctors = []; }
     let currentDoctor = null;
 
-    function saveData() {
-      localStorage.setItem('medconf_doctors', JSON.stringify(doctors));
+    async function loadDoctors() {
+      const { data, error } = await db.from('doctors').select('*').order('created_at', { ascending: true });
+      if (error) { console.error('Load error:', error.message); return []; }
+      return data.map(function (d) {
+        return {
+          id: d.id, fName: d.first_name, lName: d.last_name,
+          mobile: d.mobile, email: d.email, specialty: d.specialty,
+          regNo: d.reg_no, hospital: d.hospital, city: d.city,
+          photo: d.photo, paid: d.paid, regDate: d.reg_date
+        };
+      });
+    }
+
+    async function saveDoctor(doc) {
+      const { error } = await db.from('doctors').upsert({
+        id: doc.id, first_name: doc.fName, last_name: doc.lName,
+        mobile: doc.mobile, email: doc.email, specialty: doc.specialty,
+        reg_no: doc.regNo || '', hospital: doc.hospital || '',
+        city: doc.city || '', photo: doc.photo || '',
+        paid: doc.paid, reg_date: doc.regDate
+      });
+      if (error) { console.error('Save error:', error.message); alert('❌ Save failed: ' + error.message); }
+    }
+
+    async function updatePaidInDB(id) {
+      const { error } = await db.from('doctors').update({ paid: true }).eq('id', id);
+      if (error) { console.error('Update error:', error.message); }
     }
 
     // ==================== QR CODE GENERATION ====================
@@ -1983,11 +2188,12 @@
     }
 
     // ==================== INIT ====================
-    window.addEventListener('load', function () {
+    window.addEventListener('load', async function () {
       const url = window.location.origin + window.location.pathname;
       document.getElementById('siteUrl').textContent = url;
       generateQR('websiteQR', url, 160);
       generateQR('paymentQR', 'upi://pay?pa=medconf2026@hdfc&pn=MedConf2026&am=2500&cu=INR&tn=ConferenceRegistration', 160);
+      doctors = await loadDoctors();
       updateAdminStats();
       renderAdminTables();
     });
@@ -2046,13 +2252,13 @@
       setTimeout(function () { document.getElementById('payModal').classList.add('active'); }, 300);
     }
 
-    function confirmPayment() {
+    async function confirmPayment() {
       if (!currentDoctor) return;
       const num = String(doctors.length + 1).padStart(4, '0');
       currentDoctor.id = 'MC-2026-' + num;
       currentDoctor.paid = true;
       doctors.push(Object.assign({}, currentDoctor));
-      saveData();
+      await saveDoctor(currentDoctor);
       updateAdminStats();
       renderAdminTables();
       closeModal('payModal');
@@ -2080,9 +2286,10 @@
     }
 
     // ==================== ADMIN ====================
-    function showAdmin() {
+    async function showAdmin() {
       const password = prompt('Enter Admin Password');
       if (password !== 'admin123') { alert('❌ Wrong Password'); return; }
+      doctors = await loadDoctors();
       document.getElementById('mainSite').style.display = 'none';
       document.getElementById('adminPage').style.display = 'block';
       updateAdminStats();
@@ -2140,9 +2347,9 @@
       });
     }
 
-    function markPaid(index) {
+    async function markPaid(index) {
       doctors[index].paid = true;
-      saveData();
+      await updatePaidInDB(doctors[index].id);
       updateAdminStats();
       renderAdminTables();
       alert('✅ Payment confirmed for Dr. ' + doctors[index].fName + ' ' + doctors[index].lName);
@@ -2213,6 +2420,55 @@
       XLSX.utils.book_append_sheet(wb, ws, 'Registered Doctors');
       XLSX.writeFile(wb, 'MedConf_Doctors_' + Date.now() + '.xlsx');
     }
+
+    // ==================== COUNTDOWN ====================
+    (function () {
+      var target = new Date('2026-10-02T08:00:00+05:30').getTime();
+
+      function pad(n) { return String(n).padStart(2, '0'); }
+
+      function tick() {
+        var now = Date.now();
+        var diff = target - now;
+
+        if (diff <= 0) {
+          var grid = document.getElementById('countdownGrid');
+          if (grid) grid.innerHTML = '<div class="countdown-ended">🎉 The Conference Has Begun!</div>';
+          return;
+        }
+
+        var days = Math.floor(diff / 86400000);
+        var hours = Math.floor((diff % 86400000) / 3600000);
+        var mins = Math.floor((diff % 3600000) / 60000);
+        var secs = Math.floor((diff % 60000) / 1000);
+
+        function update(id, val) {
+          var el = document.getElementById(id);
+          if (!el) return;
+          var newVal = pad(val);
+          if (el.textContent !== newVal) {
+            el.textContent = newVal;
+            el.classList.remove('flip');
+            void el.offsetWidth;
+            el.classList.add('flip');
+            setTimeout(function () { el.classList.remove('flip'); }, 220);
+          }
+        }
+
+        update('cd-days', days);
+        update('cd-hours', hours);
+        update('cd-mins', mins);
+        update('cd-secs', secs);
+      }
+
+      // Run immediately once DOM is ready, then every second
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function () { tick(); setInterval(tick, 1000); });
+      } else {
+        tick();
+        setInterval(tick, 1000);
+      }
+    })();
   </script>
 </body>
 
