@@ -2,10 +2,6 @@
 // ==================== VISIT CARD QR LOGIC ====================
 // Build a self-contained URL that points to THIS same page with ?card=1&... params
 // Works on any device as long as they can reach the same server
-
-const SUPABASE_URL = 'https://jdpkejxyzrpgdrmlbhtm.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpkcGtlanh5enJwZ2RybWxiaHRtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3MDc2MTAsImV4cCI6MjA5NTI4MzYxMH0.DMIbKPm8r9TZiCpyjD1a8rI_6PI-z99VRVqzLmvqqDo';
-
 function buildVisitCardURL(d) {
     const base = window.location.origin + window.location.pathname;
     // NOTE: photo is NOT included in URL — base64 images are huge and break QR codes.
@@ -89,53 +85,42 @@ function buildVisitCardURL(d) {
       `).join('');
 })();
 
+// ==================== SUPABASE CONFIG ====================
+const SUPABASE_URL = 'https://jdpkejxyzrpgdrmlbhtm.supabase.co';   // 🔴 Replace this
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpkcGtlanh5enJwZ2RybWxiaHRtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3MDc2MTAsImV4cCI6MjA5NTI4MzYxMH0.DMIbKPm8r9TZiCpyjD1a8rI_6PI-z99VRVqzLmvqqDo'; // 🔴 Replace this
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
 // ==================== DATA STORE ====================
 let doctors = [];
-try { doctors = JSON.parse(localStorage.getItem('medconf_doctors') || '[]'); } catch (e) { doctors = []; }
 let currentDoctor = null;
 
-// Init Supabase client
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-// Save a single doctor to Supabase
-async function saveDoctor(doc) {
-    const { error } = await supabase.from('doctors').upsert({
-        id: doc.id,
-        first_name: doc.fName,
-        last_name: doc.lName,
-        mobile: doc.mobile,
-        email: doc.email,
-        specialty: doc.specialty,
-        reg_no: doc.regNo || '',
-        hospital: doc.hospital || '',
-        city: doc.city || '',
-        photo: doc.photo || '',
-        paid: doc.paid,
-        reg_date: doc.regDate
-    });
-    if (error) console.error('Save error:', error.message);
-}
-
-// Load all doctors from Supabase
 async function loadDoctors() {
-    const { data, error } = await supabase
-        .from('doctors')
-        .select('*')
-        .order('created_at', { ascending: true });
+    const { data, error } = await db.from('doctors').select('*').order('created_at', { ascending: true });
     if (error) { console.error('Load error:', error.message); return []; }
-    return data.map(d => ({
-        id: d.id, fName: d.first_name, lName: d.last_name,
-        mobile: d.mobile, email: d.email, specialty: d.specialty,
-        regNo: d.reg_no, hospital: d.hospital, city: d.city,
-        photo: d.photo, paid: d.paid, regDate: d.reg_date
-    }));
+    return data.map(function (d) {
+        return {
+            id: d.id, fName: d.first_name, lName: d.last_name,
+            mobile: d.mobile, email: d.email, specialty: d.specialty,
+            regNo: d.reg_no, hospital: d.hospital, city: d.city,
+            photo: d.photo, paid: d.paid, regDate: d.reg_date
+        };
+    });
 }
 
-// Mark a doctor as paid
-async function markPaidInDB(id) {
-    const { error } = await supabase
-        .from('doctors').update({ paid: true }).eq('id', id);
-    if (error) console.error('Update error:', error.message);
+async function saveDoctor(doc) {
+    const { error } = await db.from('doctors').upsert({
+        id: doc.id, first_name: doc.fName, last_name: doc.lName,
+        mobile: doc.mobile, email: doc.email, specialty: doc.specialty,
+        reg_no: doc.regNo || '', hospital: doc.hospital || '',
+        city: doc.city || '', photo: doc.photo || '',
+        paid: doc.paid, reg_date: doc.regDate
+    });
+    if (error) { console.error('Save error:', error.message); alert('❌ Save failed: ' + error.message); }
+}
+
+async function updatePaidInDB(id) {
+    const { error } = await db.from('doctors').update({ paid: true }).eq('id', id);
+    if (error) { console.error('Update error:', error.message); }
 }
 
 // ==================== QR CODE GENERATION ====================
@@ -148,11 +133,12 @@ function generateQR(elementId, text, size) {
 }
 
 // ==================== INIT ====================
-window.addEventListener('load', function () {
+window.addEventListener('load', async function () {
     const url = window.location.origin + window.location.pathname;
     document.getElementById('siteUrl').textContent = url;
     generateQR('websiteQR', url, 160);
     generateQR('paymentQR', 'upi://pay?pa=medconf2026@hdfc&pn=MedConf2026&am=2500&cu=INR&tn=ConferenceRegistration', 160);
+    doctors = await loadDoctors();
     updateAdminStats();
     renderAdminTables();
 });
@@ -211,7 +197,7 @@ function submitRegistration() {
     setTimeout(function () { document.getElementById('payModal').classList.add('active'); }, 300);
 }
 
-function confirmPayment() {
+async function confirmPayment() {
     if (!currentDoctor) return;
     const num = String(doctors.length + 1).padStart(4, '0');
     currentDoctor.id = 'MC-2026-' + num;
@@ -248,7 +234,7 @@ function showSuccess(doc) {
 async function showAdmin() {
     const password = prompt('Enter Admin Password');
     if (password !== 'admin123') { alert('❌ Wrong Password'); return; }
-    doctors = await loadDoctors();   // ← load fresh from Supabase
+    doctors = await loadDoctors();
     document.getElementById('mainSite').style.display = 'none';
     document.getElementById('adminPage').style.display = 'block';
     updateAdminStats();
@@ -308,7 +294,7 @@ function renderAdminTables() {
 
 async function markPaid(index) {
     doctors[index].paid = true;
-    await markPaidInDB(doctors[index].id);   // ← Supabase update
+    await updatePaidInDB(doctors[index].id);
     updateAdminStats();
     renderAdminTables();
     alert('✅ Payment confirmed for Dr. ' + doctors[index].fName + ' ' + doctors[index].lName);
